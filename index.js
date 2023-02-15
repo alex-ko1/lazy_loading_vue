@@ -28,7 +28,7 @@ export default {
             lastChild = el.lastElementChild;
             observer.observe(lastChild);
           },
-          !slow ? 1000 : 3500
+          !slow ? 1000 : 4000
         );
       }
     };
@@ -42,7 +42,7 @@ export default {
         setTimeout(() => {
           lastChild = el.lastElementChild;
           observer.observe(lastChild);
-        }, 2500);
+        }, 3000);
       }
     }, 1000);
   },
