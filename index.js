@@ -39,11 +39,13 @@ export default {
         observer.observe(lastChild);
       } else {
         slow = true;
-        setTimeout(() => {
-          lastChild = el.lastElementChild;
-          observer.observe(lastChild);
-        }, 3000);
       }
     }, 1000);
+    if (slow) {
+      setTimeout(() => {
+        lastChild = el.lastElementChild;
+        observer.observe(lastChild);
+      }, 4000);
+    }
   },
 };
