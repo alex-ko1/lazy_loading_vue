@@ -39,19 +39,17 @@ export default {
         observer.observe(lastChild);
       } else {
         slow = true;
+        setTimeout(() => {
+          lastChild = el.lastElementChild;
+          observer.observe(lastChild);
+        }, 6000);
       }
     }, 1000);
-    setTimeout(() => {
-      if (lastChild) {
-        lastChild = el.lastElementChild;
-        observer.observe(lastChild);
-      }
-    }, 4000);
-    setTimeout(() => {
-      if (lastChild) {
-        lastChild = el.lastElementChild;
-        observer.observe(lastChild);
-      }
-    }, 6000);
+    // setTimeout(() => {
+    //   if (lastChild) {
+    //     lastChild = el.lastElementChild;
+    //     observer.observe(lastChild);
+    //   }
+    // }, 4000);
   },
 };
