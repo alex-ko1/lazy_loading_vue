@@ -24,6 +24,7 @@ export default {
         setTimeout(
           () => {
             observer.unobserve(lastChild);
+            el.removeChild(lazyLoader);
             lastChild = el.lastElementChild;
             observer.observe(lastChild);
           },
