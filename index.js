@@ -42,10 +42,16 @@ export default {
       }
     }, 1000);
     setTimeout(() => {
-      if (slow) {
+      if (lastChild) {
         lastChild = el.lastElementChild;
         observer.observe(lastChild);
       }
     }, 4000);
+    setTimeout(() => {
+      if (lastChild) {
+        lastChild = el.lastElementChild;
+        observer.observe(lastChild);
+      }
+    }, 6000);
   },
 };
