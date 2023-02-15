@@ -24,12 +24,11 @@ An example of using a directive:
 
 ```vue
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-lazy="exampleFuncLoadMorePosts">
     <div class="item" v-for="post in posts" :key="post.id">
       <div class="item-title">{{ post.title }}</div>
       <div class="item-body">{{ post.body }}</div>
     </div>
-    <div v-lazy="exampleFuncLoadMore" class="observer"></div>
   </div>
 </template>
 ```
