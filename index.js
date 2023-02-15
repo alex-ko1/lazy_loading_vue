@@ -41,11 +41,11 @@ export default {
         slow = true;
       }
     }, 1000);
-    if (slow) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (slow) {
         lastChild = el.lastElementChild;
         observer.observe(lastChild);
-      }, 4000);
-    }
+      }
+    }, 4000);
   },
 };
