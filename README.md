@@ -2,6 +2,10 @@
 
 Vuejs custom directive for lazy loading.
 
+## Example
+
+[Example on CodeSandbox](https://codesandbox.io/p/github/alex-ko1/lazy-load-directive/master?workspaceId=e57cc4af-8f45-46e7-973e-c6cee935f708&file=%2FREADME.md)
+
 ## Installation
 
 ```bash
