@@ -1,7 +1,7 @@
 export default {
   mounted(el, binding) {
     // Using Intersection Observer API for lazy loading posts in custom directives.
-    let lastChild, slow, lazyLoader;
+    let lastChild, slow, lazyLoader, lastChildCopy;
     if (binding.arg == "loader") {
       lazyLoader = document.createElement("div");
       lazyLoader.classList.add("lazyLoader");
@@ -18,6 +18,7 @@ export default {
     const callback = (entries, observer) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
+          lastChildCopy = el.lastChild;
           el.append(lazyLoader);
         }
         binding.value();
@@ -26,7 +27,8 @@ export default {
             observer.unobserve(lastChild);
             el.removeChild(lazyLoader);
             lastChild = el.lastElementChild;
-            observer.observe(lastChild);
+            if (lastChildCopy == lastChild) return;
+            else observer.observe(lastChild);
           },
           !slow ? 1000 : 4000
         );
@@ -45,11 +47,5 @@ export default {
         }, 6000);
       }
     }, 1000);
-    // setTimeout(() => {
-    //   if (lastChild) {
-    //     lastChild = el.lastElementChild;
-    //     observer.observe(lastChild);
-    //   }
-    // }, 4000);
   },
 };
