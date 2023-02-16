@@ -8,7 +8,7 @@ export default {
       lazyLoader.textContent = "Load...";
       lazyLoader.style.textAlign = "center";
       lazyLoader.style.color = "red";
-      lazyLoader.style.margin = "10px 0";
+      lazyLoader.style.margin = "10px auto";
     }
     const options = {
       //root: null,
