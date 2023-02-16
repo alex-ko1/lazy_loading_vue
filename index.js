@@ -18,7 +18,7 @@ export default {
     const callback = (entries, observer) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
-          lastChildCopy = el.lastChild;
+          lastChildCopy = el.lastElementChild;
           el.append(lazyLoader);
         }
         binding.value();
