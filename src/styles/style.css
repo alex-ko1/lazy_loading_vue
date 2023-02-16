@@ -1,0 +1,25 @@
+.vue-lazy-loader {
+  width: 50px;
+  height: 50px;
+  margin: 10px auto;
+  text-align: center;
+}
+.vue-lazy-loader:after {
+  content: " ";
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #ccc;
+  border-color: #ccc transparent #ccc transparent;
+  animation: vue-lazy-loader 1.2s linear infinite;
+}
+@keyframes vue-lazy-loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

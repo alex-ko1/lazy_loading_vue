@@ -1,14 +1,12 @@
+import "./styles/style.css";
 export default {
   mounted(el, binding) {
     // Using Intersection Observer API for lazy loading posts in custom directives.
     let lastChild, slow, lazyLoader, lastChildCopy;
     if (binding.arg == "loader") {
       lazyLoader = document.createElement("div");
-      lazyLoader.classList.add("lazyLoader");
+      lazyLoader.classList.add("vue-lazy-loader");
       lazyLoader.textContent = "Load...";
-      lazyLoader.style.textAlign = "center";
-      lazyLoader.style.color = "red";
-      lazyLoader.style.margin = "10px auto";
     }
     const options = {
       //root: null,
