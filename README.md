@@ -1,6 +1,6 @@
 # lazy_loading_vue
 
-Vuejs custom directive for lazy loading
+Vuejs custom directive for lazy loading.
 
 ## Installation
 
@@ -33,4 +33,32 @@ An example of using a directive:
 </template>
 ```
 
-Not recommended for use with v-if, it is better to use v-show
+Examples of styles for the loader, if you use it
+
+```css
+.lazyLoader {
+  width: 50px;
+  height: 50px;
+}
+.lazyLoader:after {
+  content: " ";
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #ccc;
+  border-color: #ccc transparent #ccc transparent;
+  animation: lazyLoader 1.2s linear infinite;
+}
+@keyframes lazyLoader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+```
+
+Not recommended for use this directive with v-if, it is better to use v-show.
