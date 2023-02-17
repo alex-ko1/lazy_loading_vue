@@ -1,19 +1,38 @@
-import "./styles/style.css";
+import "styles/style.css";
+
+// export interface ComponentOptions {
+//   mounted?(this: ComponentPublicInstance): void;
+// }
+
 export default {
-  mounted(el, binding) {
-    // Using Intersection Observer API for lazy loading posts in custom directives.
-    let lastChild, slow, lazyLoader, lastChildCopy;
+  mounted(el: any, binding: any) {
+    // If you use loader
+    let lastChild: HTMLElement,
+      slow: boolean,
+      lazyLoader: HTMLElement,
+      lastChildCopy: HTMLElement;
     if (binding.arg == "loader") {
       lazyLoader = document.createElement("div");
       lazyLoader.classList.add("vue-lazy-loader");
       lazyLoader.textContent = "Load...";
     }
-    const options = {
+
+    // Using Intersection Observer API for lazy loading posts in custom directives.
+    interface RootElement {
+      element: HTMLElement;
+      id: string;
+    }
+    interface ObserveOptions {
+      rootElement?: RootElement;
+      rootMargin?: string;
+      threshold?: number | number[];
+    }
+    const options: ObserveOptions = {
       //root: null,
       rootMargin: "0px",
       threshold: 0.75,
     };
-    const callback = (entries, observer) => {
+    const callback = (entries: any, observer: any) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
           lastChildCopy = el.lastElementChild;

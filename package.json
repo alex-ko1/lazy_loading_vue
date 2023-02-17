@@ -2,7 +2,7 @@
   "name": "lazy_loading_vue",
   "version": "0.3.1",
   "description": "Vuejs custom directive for lazy loading",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/alex-ko1/lazy_loading_vue.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
