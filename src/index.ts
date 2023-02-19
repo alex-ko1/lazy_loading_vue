@@ -32,7 +32,10 @@ export default {
       rootMargin: "0px",
       threshold: 0.75,
     };
-    const callback = (entries: any, observer: any) => {
+    const callback = (
+      entries: { isIntersecting: boolean }[],
+      observer: { observe: Function; unobserve: Function }
+    ) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
           lastChildCopy = el.lastElementChild;
