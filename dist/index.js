@@ -1,4 +1,4 @@
-import "./styles/style.css";
+import "../src/styles/style.css";
 export default {
     mounted(el, binding) {
         // If you use loader
