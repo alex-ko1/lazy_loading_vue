@@ -1,11 +1,10 @@
-import "../src/styles/style.css";
-// export interface ComponentOptions {
-//   mounted?(this: ComponentPublicInstance): void;
-// }
+import "./styles/style.css";
 export default {
     mounted(el, binding) {
         // If you use loader
-        let lastChild, slow, lazyLoader, lastChildCopy;
+        const elId = Math.round(Math.random() * 100000);
+        let lastChild, slow, lazyLoader, lastChildCopy, updatedEl;
+        el.setAttribute("id", `list-${elId}`);
         if (binding.arg == "loader") {
             lazyLoader = document.createElement("div");
             lazyLoader.classList.add("vue-lazy-loader");
@@ -23,29 +22,49 @@ export default {
                     el.append(lazyLoader);
                 }
                 binding.value();
+                // setTimeout(
+                //   () => {
+                //     observer.unobserve(lastChild);
+                //     el.removeChild(lazyLoader);
+                //     lastChild = el.lastElementChild;
+                //     if (lastChildCopy == lastChild) return;
+                //     else observer.observe(lastChild);
+                //   },
+                //   !slow ? 1000 : 4000
+                // );
                 setTimeout(() => {
                     observer.unobserve(lastChild);
                     el.removeChild(lazyLoader);
                     lastChild = el.lastElementChild;
-                    if (lastChildCopy == lastChild)
+                    if (lastChildCopy == lastChild) {
                         return;
-                    else
+                    }
+                    else {
                         observer.observe(lastChild);
-                }, !slow ? 1000 : 4000);
+                    }
+                }, 3000);
             }
         };
         const observer = new IntersectionObserver(callback, options);
+        // setTimeout(() => {
+        //   lastChild = el.lastElementChild;
+        //   if (lastChild) {
+        //     observer.observe(lastChild);
+        //   } else {
+        //     slow = true;
+        //     setTimeout(() => {
+        //       lastChild = el.lastElementChild;
+        //       observer.observe(lastChild);
+        //     }, 6000);
+        //   }
+        // }, 1000);
         setTimeout(() => {
-            lastChild = el.lastElementChild;
-            if (lastChild) {
-                observer.observe(lastChild);
-            }
-            else {
-                slow = true;
-                setTimeout(() => {
-                    lastChild = el.lastElementChild;
+            updatedEl = document.getElementById(`list-${elId}`);
+            if (updatedEl) {
+                lastChild = updatedEl.lastElementChild;
+                if (lastChild) {
                     observer.observe(lastChild);
-                }, 6000);
+                }
             }
         }, 1000);
     },
