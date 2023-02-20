@@ -1,4 +1,4 @@
-import "./styles/style.css";
+import "../src/styles/style.css";
 
 interface Binding {
   value: Function;
