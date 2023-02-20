@@ -14,14 +14,13 @@ export default {
   mounted(el: El, binding: Binding) {
     // If you use loader
     const elId: Number = Math.round(Math.random() * 100000);
+    el.setAttribute("id", `list-${elId}`);
 
     let lastChild: HTMLElement,
-      slow: boolean,
       lazyLoader: HTMLElement,
       lastChildCopy: HTMLElement,
       updatedEl;
 
-    el.setAttribute("id", `list-${elId}`);
     if (binding.arg == "loader") {
       lazyLoader = document.createElement("div");
       lazyLoader.classList.add("vue-lazy-loader");
@@ -43,26 +42,21 @@ export default {
       rootMargin: "0px",
       threshold: 0.75,
     };
-    const callback = (
-      entries: { isIntersecting: boolean }[],
-      observer: { observe: Function; unobserve: Function }
-    ) => {
+    interface Entries {
+      isIntersecting: boolean;
+    }
+    interface Observer {
+      observe: Function;
+      unobserve: Function;
+    }
+    const callback = (entries: Entries[], observer: Observer) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
           lastChildCopy = el.lastElementChild;
           el.append(lazyLoader);
         }
         binding.value();
-        // setTimeout(
-        //   () => {
-        //     observer.unobserve(lastChild);
-        //     el.removeChild(lazyLoader);
-        //     lastChild = el.lastElementChild;
-        //     if (lastChildCopy == lastChild) return;
-        //     else observer.observe(lastChild);
-        //   },
-        //   !slow ? 1000 : 4000
-        // );
+
         setTimeout(() => {
           observer.unobserve(lastChild);
           el.removeChild(lazyLoader);
@@ -76,18 +70,7 @@ export default {
       }
     };
     const observer = new IntersectionObserver(callback, options);
-    // setTimeout(() => {
-    //   lastChild = el.lastElementChild;
-    //   if (lastChild) {
-    //     observer.observe(lastChild);
-    //   } else {
-    //     slow = true;
-    //     setTimeout(() => {
-    //       lastChild = el.lastElementChild;
-    //       observer.observe(lastChild);
-    //     }, 6000);
-    //   }
-    // }, 1000);
+
     setTimeout(() => {
       updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
       if (updatedEl) {
