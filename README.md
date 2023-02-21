@@ -2,6 +2,8 @@
 
 Vuejs custom directive for lazy loading.
 
+This directive works by following the last element in the list, and when you scroll to it, your function is called where you can add more content. You can also use a loader that will be visible until more content is added.
+
 ## Example
 
 [Example on CodeSandbox](https://codesandbox.io/p/github/alex-ko1/lazy-load-directive/master?workspaceId=e57cc4af-8f45-46e7-973e-c6cee935f708&file=%2FREADME.md)
@@ -36,5 +38,3 @@ An example of using a directive:
   </div>
 </template>
 ```
-
-Not recommended for use this directive with v-if, it is better to use v-show.
