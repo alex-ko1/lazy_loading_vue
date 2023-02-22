@@ -59,7 +59,9 @@ export default {
 
         setTimeout(() => {
           observer.unobserve(lastChild);
-          el.removeChild(lazyLoader);
+          if (lazyLoader) {
+            el.removeChild(lazyLoader);
+          }
           lastChild = el.lastElementChild;
           if (lastChildCopy == lastChild) {
             return;
