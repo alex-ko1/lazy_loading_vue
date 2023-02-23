@@ -4,7 +4,7 @@ export default {
         // If you use loader
         const elId = Math.round(Math.random() * 100000);
         el.setAttribute("id", `list-${elId}`);
-        let lastChild, lazyLoader, lastChildCopy, updatedEl;
+        let lastChildItem, lazyLoader, lastChildItemCopy, isTransitionWrapper, updatedEl;
         if (binding.arg == "loader") {
             lazyLoader = document.createElement("div");
             lazyLoader.classList.add("vue-lazy-loader");
@@ -18,21 +18,31 @@ export default {
         const callback = (entries, observer) => {
             if (entries[0].isIntersecting) {
                 if (lazyLoader) {
-                    lastChildCopy = el.lastElementChild;
+                    if (!isTransitionWrapper) {
+                        lastChildItemCopy = el.lastElementChild;
+                    }
+                    else {
+                        lastChildItemCopy = el.lastChild.lastElementChild;
+                    }
                     el.append(lazyLoader);
                 }
                 binding.value();
                 setTimeout(() => {
-                    observer.unobserve(lastChild);
+                    observer.unobserve(lastChildItem);
                     if (lazyLoader) {
                         el.removeChild(lazyLoader);
                     }
-                    lastChild = el.lastElementChild;
-                    if (lastChildCopy == lastChild) {
+                    if (!isTransitionWrapper) {
+                        lastChildItem = el.lastElementChild;
+                    }
+                    else {
+                        lastChildItem = el.lastChild.lastElementChild;
+                    }
+                    if (lastChildItemCopy == lastChildItem) {
                         return;
                     }
                     else {
-                        observer.observe(lastChild);
+                        observer.observe(lastChildItem);
                     }
                 }, 3000);
             }
@@ -40,10 +50,20 @@ export default {
         const observer = new IntersectionObserver(callback, options);
         setTimeout(() => {
             updatedEl = document.getElementById(`list-${elId}`);
-            if (updatedEl) {
-                lastChild = updatedEl.lastElementChild;
-                if (lastChild) {
-                    observer.observe(lastChild);
+            isTransitionWrapper =
+                el.lastElementChild.tagName.toLowerCase() ==
+                    "transition-group-stub";
+            if (updatedEl && !isTransitionWrapper) {
+                lastChildItem = updatedEl.lastElementChild;
+                if (lastChildItem) {
+                    observer.observe(lastChildItem);
+                }
+            }
+            else if (updatedEl && isTransitionWrapper) {
+                lastChildItem = updatedEl.lastChild;
+                lastChildItem = lastChildItem.lastElementChild;
+                if (lastChildItem) {
+                    observer.observe(lastChildItem);
                 }
             }
         }, 1000);

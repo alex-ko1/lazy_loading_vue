@@ -11,7 +11,7 @@ This directive works by following the last element in the list, and when you scr
 ## Installation
 
 ```bash
-npm install lazy_loading_vue
+npm install lazy_loading_vue --save
 ```
 
 ## Usage example
