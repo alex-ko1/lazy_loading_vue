@@ -6,6 +6,9 @@ interface Binding {
 }
 interface El {
   lastElementChild: HTMLElement;
+  lastChild: {
+    lastElementChild: HTMLElement;
+  };
   append: Function;
   removeChild: Function;
   setAttribute: Function;
@@ -16,10 +19,10 @@ export default {
     const elId: Number = Math.round(Math.random() * 100000);
     el.setAttribute("id", `list-${elId}`);
 
-    let lastChild: HTMLElement,
+    let lastChildItem: HTMLElement,
       lazyLoader: HTMLElement,
-      lastChildCopy: HTMLElement,
-      updatedEl;
+      lastChildItemCopy: HTMLElement,
+      updatedEl: HTMLElement;
 
     if (binding.arg == "loader") {
       lazyLoader = document.createElement("div");
@@ -52,21 +55,21 @@ export default {
     const callback = (entries: Entries[], observer: Observer) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
-          lastChildCopy = el.lastElementChild;
+          lastChildItemCopy = el.lastElementChild;
           el.append(lazyLoader);
         }
         binding.value();
 
         setTimeout(() => {
-          observer.unobserve(lastChild);
+          observer.unobserve(lastChildItem);
           if (lazyLoader) {
             el.removeChild(lazyLoader);
           }
-          lastChild = el.lastElementChild;
-          if (lastChildCopy == lastChild) {
+          lastChildItem = el.lastElementChild;
+          if (lastChildItemCopy == lastChildItem) {
             return;
           } else {
-            observer.observe(lastChild);
+            observer.observe(lastChildItem);
           }
         }, 3000);
       }
@@ -76,9 +79,9 @@ export default {
     setTimeout(() => {
       updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
       if (updatedEl) {
-        lastChild = updatedEl.lastElementChild as HTMLDivElement;
-        if (lastChild) {
-          observer.observe(lastChild);
+        lastChildItem = updatedEl.lastElementChild as HTMLDivElement;
+        if (lastChildItem) {
+          observer.observe(lastChildItem);
         }
       }
     }, 1000);
