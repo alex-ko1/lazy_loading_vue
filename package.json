@@ -1,6 +1,6 @@
 {
   "name": "lazy_loading_vue",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "description": "Vuejs custom directive for lazy loading",
   "main": "dist/index.js",
   "repository": "https://github.com/alex-ko1/lazy_loading_vue.git",
