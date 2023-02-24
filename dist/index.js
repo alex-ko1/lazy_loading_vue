@@ -18,7 +18,8 @@ export default {
         const callback = (entries, observer) => {
             if (entries[0].isIntersecting) {
                 if (lazyLoader) {
-                    lastChildItemCopy = el.lastElementChild;
+                    lastChildItemCopy =
+                        el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                     el.append(lazyLoader);
                 }
                 binding.value();
@@ -27,7 +28,8 @@ export default {
                     if (lazyLoader) {
                         el.removeChild(lazyLoader);
                     }
-                    lastChildItem = el.lastElementChild;
+                    lastChildItem =
+                        el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                     if (lastChildItemCopy == lastChildItem) {
                         return;
                     }
@@ -41,7 +43,7 @@ export default {
         setTimeout(() => {
             updatedEl = document.getElementById(`list-${elId}`);
             if (updatedEl) {
-                lastChildItem = updatedEl.lastElementChild;
+                lastChildItem = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                 if (lastChildItem) {
                     observer.observe(lastChildItem);
                 }

@@ -12,6 +12,7 @@ interface El {
   append: Function;
   removeChild: Function;
   setAttribute: Function;
+  querySelectorAll: Function;
 }
 export default {
   mounted(el: El, binding: Binding) {
@@ -55,7 +56,10 @@ export default {
     const callback = (entries: Entries[], observer: Observer) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
-          lastChildItemCopy = el.lastElementChild;
+          lastChildItemCopy =
+            el.querySelectorAll(".lazy-item")[
+              el.querySelectorAll(".lazy-item").length - 1
+            ];
           el.append(lazyLoader);
         }
         binding.value();
@@ -65,7 +69,10 @@ export default {
           if (lazyLoader) {
             el.removeChild(lazyLoader);
           }
-          lastChildItem = el.lastElementChild;
+          lastChildItem =
+            el.querySelectorAll(".lazy-item")[
+              el.querySelectorAll(".lazy-item").length - 1
+            ];
           if (lastChildItemCopy == lastChildItem) {
             return;
           } else {
@@ -79,7 +86,9 @@ export default {
     setTimeout(() => {
       updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
       if (updatedEl) {
-        lastChildItem = updatedEl.lastElementChild as HTMLDivElement;
+        lastChildItem = updatedEl.querySelectorAll(".lazy-item")[
+          el.querySelectorAll(".lazy-item").length - 1
+        ] as HTMLDivElement;
         if (lastChildItem) {
           observer.observe(lastChildItem);
         }
