@@ -28,12 +28,14 @@ app.directive("lazy", VLazyLoader);
 
 An example of using a directive:
 
+Be sure to add the lazy-item class to each item in the list.
+
 ```vue
 <template>
   <div class="wrapper" v-lazy:loader="exampleFuncLoadMorePosts">
-    <div class="item" v-for="post in posts" :key="post.id">
-      <div class="item-title">{{ post.title }}</div>
-      <div class="item-body">{{ post.body }}</div>
+    <div class="lazy-item" v-for="item in items" :key="item.id">
+      <div class="title">{{ item.title }}</div>
+      <div class="body">{{ item.body }}</div>
     </div>
   </div>
 </template>
