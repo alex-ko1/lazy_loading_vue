@@ -20,9 +20,9 @@ export default {
     const elId: Number = Math.round(Math.random() * 100000);
     el.setAttribute("id", `list-${elId}`);
 
-    let currentObserver: HTMLElement,
+    let lastChildItem: HTMLElement,
       lazyLoader: HTMLElement,
-      lastChildItem: HTMLElement,
+      lastChildItemCopy: HTMLElement,
       updatedEl: HTMLElement;
 
     if (binding.arg == "loader") {
@@ -55,43 +55,42 @@ export default {
     }
     const callback = (entries: Entries[], observer: Observer) => {
       if (entries[0].isIntersecting) {
+        lastChildItemCopy =
+          el.querySelectorAll(".lazy-item")[
+            el.querySelectorAll(".lazy-item").length - 1
+          ];
         if (lazyLoader) {
-          lastChildItem =
-            el.querySelectorAll(".lazy-item")[
-              el.querySelectorAll(".lazy-item").length - 1
-            ];
           el.append(lazyLoader);
         }
-        observer.unobserve(currentObserver);
         binding.value();
+        observer.unobserve(lastChildItem);
 
         setTimeout(() => {
           if (lazyLoader) {
             el.removeChild(lazyLoader);
           }
-          currentObserver =
+          lastChildItem =
             el.querySelectorAll(".lazy-item")[
               el.querySelectorAll(".lazy-item").length - 1
             ];
-          if (lastChildItem == currentObserver) {
+          if (lastChildItemCopy == lastChildItem) {
             return;
           } else {
-            observer.observe(currentObserver);
+            observer.observe(lastChildItem);
           }
         }, 3000);
       }
     };
     const observer = new IntersectionObserver(callback, options);
-    setTimeout(() => {
-      updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
-      if (updatedEl) {
-        currentObserver = updatedEl.querySelectorAll(".lazy-item")[
-          el.querySelectorAll(".lazy-item").length - 1
-        ] as HTMLDivElement;
-        if (currentObserver) {
-          observer.observe(currentObserver);
-        }
+
+    updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
+    if (updatedEl) {
+      lastChildItem = updatedEl.querySelectorAll(".lazy-item")[
+        el.querySelectorAll(".lazy-item").length - 1
+      ] as HTMLDivElement;
+      if (lastChildItem) {
+        observer.observe(lastChildItem);
       }
-    }, 1000);
+    }
   },
 };

@@ -4,7 +4,7 @@ export default {
         // If you use loader
         const elId = Math.round(Math.random() * 100000);
         el.setAttribute("id", `list-${elId}`);
-        let currentObserver, lazyLoader, lastChildItem, updatedEl;
+        let lastChildItem, lazyLoader, lastChildItemCopy, updatedEl;
         if (binding.arg == "loader") {
             lazyLoader = document.createElement("div");
             lazyLoader.classList.add("vue-lazy-loader");
@@ -17,37 +17,35 @@ export default {
         };
         const callback = (entries, observer) => {
             if (entries[0].isIntersecting) {
+                lastChildItemCopy =
+                    el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                 if (lazyLoader) {
-                    lastChildItem =
-                        el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                     el.append(lazyLoader);
                 }
-                observer.unobserve(currentObserver);
                 binding.value();
+                observer.unobserve(lastChildItem);
                 setTimeout(() => {
                     if (lazyLoader) {
                         el.removeChild(lazyLoader);
                     }
-                    currentObserver =
+                    lastChildItem =
                         el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
-                    if (lastChildItem == currentObserver) {
+                    if (lastChildItemCopy == lastChildItem) {
                         return;
                     }
                     else {
-                        observer.observe(currentObserver);
+                        observer.observe(lastChildItem);
                     }
                 }, 3000);
             }
         };
         const observer = new IntersectionObserver(callback, options);
-        setTimeout(() => {
-            updatedEl = document.getElementById(`list-${elId}`);
-            if (updatedEl) {
-                currentObserver = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
-                if (currentObserver) {
-                    observer.observe(currentObserver);
-                }
+        updatedEl = document.getElementById(`list-${elId}`);
+        if (updatedEl) {
+            lastChildItem = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
+            if (lastChildItem) {
+                observer.observe(lastChildItem);
             }
-        }, 1000);
+        }
     },
 };
