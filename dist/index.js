@@ -40,12 +40,14 @@ export default {
             }
         };
         const observer = new IntersectionObserver(callback, options);
-        updatedEl = document.getElementById(`list-${elId}`);
-        if (updatedEl) {
-            currentObserver = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
-            if (currentObserver) {
-                observer.observe(currentObserver);
+        setTimeout(() => {
+            updatedEl = document.getElementById(`list-${elId}`);
+            if (updatedEl) {
+                currentObserver = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
+                if (currentObserver) {
+                    observer.observe(currentObserver);
+                }
             }
-        }
+        }, 1000);
     },
 };
