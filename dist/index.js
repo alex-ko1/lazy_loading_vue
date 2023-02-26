@@ -22,9 +22,9 @@ export default {
                         el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                     el.append(lazyLoader);
                 }
+                observer.unobserve(lastChildItem);
                 binding.value();
                 setTimeout(() => {
-                    observer.unobserve(lastChildItem);
                     if (lazyLoader) {
                         el.removeChild(lazyLoader);
                     }
@@ -40,14 +40,12 @@ export default {
             }
         };
         const observer = new IntersectionObserver(callback, options);
-        setTimeout(() => {
-            updatedEl = document.getElementById(`list-${elId}`);
-            if (updatedEl) {
-                lastChildItem = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
-                if (lastChildItem) {
-                    observer.observe(lastChildItem);
-                }
+        updatedEl = document.getElementById(`list-${elId}`);
+        if (updatedEl) {
+            lastChildItem = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
+            if (lastChildItem) {
+                observer.observe(lastChildItem);
             }
-        }, 1000);
+        }
     },
 };
