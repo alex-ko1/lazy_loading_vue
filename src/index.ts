@@ -20,9 +20,9 @@ export default {
     const elId: Number = Math.round(Math.random() * 100000);
     el.setAttribute("id", `list-${elId}`);
 
-    let lastChildItem: HTMLElement,
+    let currentObserver: HTMLElement,
       lazyLoader: HTMLElement,
-      lastChildItemCopy: HTMLElement,
+      lastChildItem: HTMLElement,
       updatedEl: HTMLElement;
 
     if (binding.arg == "loader") {
@@ -56,27 +56,27 @@ export default {
     const callback = (entries: Entries[], observer: Observer) => {
       if (entries[0].isIntersecting) {
         if (lazyLoader) {
-          lastChildItemCopy =
+          lastChildItem =
             el.querySelectorAll(".lazy-item")[
               el.querySelectorAll(".lazy-item").length - 1
             ];
           el.append(lazyLoader);
         }
-        observer.unobserve(lastChildItem);
+        observer.unobserve(currentObserver);
         binding.value();
 
         setTimeout(() => {
           if (lazyLoader) {
             el.removeChild(lazyLoader);
           }
-          lastChildItem =
+          currentObserver =
             el.querySelectorAll(".lazy-item")[
               el.querySelectorAll(".lazy-item").length - 1
             ];
-          if (lastChildItemCopy == lastChildItem) {
+          if (lastChildItem == currentObserver) {
             return;
           } else {
-            observer.observe(lastChildItem);
+            observer.observe(currentObserver);
           }
         }, 3000);
       }
@@ -85,11 +85,11 @@ export default {
 
     updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
     if (updatedEl) {
-      lastChildItem = updatedEl.querySelectorAll(".lazy-item")[
+      currentObserver = updatedEl.querySelectorAll(".lazy-item")[
         el.querySelectorAll(".lazy-item").length - 1
       ] as HTMLDivElement;
-      if (lastChildItem) {
-        observer.observe(lastChildItem);
+      if (currentObserver) {
+        observer.observe(currentObserver);
       }
     }
   },
