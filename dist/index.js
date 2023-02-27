@@ -59,9 +59,9 @@ export default {
             }
             else {
                 setTimeout(() => {
+                    lastChildItem =
+                        el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                     if (lastChildItem) {
-                        lastChildItem =
-                            el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                         observer.observe(lastChildItem);
                     }
                 }, 4000);
