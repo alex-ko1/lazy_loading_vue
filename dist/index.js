@@ -15,37 +15,57 @@ export default {
             rootMargin: "0px",
             threshold: 0.75,
         };
-        const callback = (entries, observer) => {
+        const callback = async (entries, observer) => {
             if (entries[0].isIntersecting) {
                 lastChildItemCopy =
                     el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
                 if (lazyLoader) {
                     el.append(lazyLoader);
                 }
-                binding.value();
                 observer.unobserve(lastChildItem);
-                setTimeout(() => {
-                    if (lazyLoader) {
-                        el.removeChild(lazyLoader);
-                    }
-                    lastChildItem =
-                        el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
-                    if (lastChildItemCopy == lastChildItem) {
-                        return;
-                    }
-                    else {
-                        observer.observe(lastChildItem);
-                    }
-                }, 3000);
+                await binding.value();
+                // setTimeout(() => {
+                if (lazyLoader) {
+                    el.removeChild(lazyLoader);
+                }
+                lastChildItem =
+                    el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
+                if (lastChildItemCopy == lastChildItem) {
+                    return;
+                }
+                else {
+                    observer.observe(lastChildItem);
+                }
+                // }, 3000);
             }
         };
         const observer = new IntersectionObserver(callback, options);
-        updatedEl = document.getElementById(`list-${elId}`);
-        if (updatedEl) {
-            lastChildItem = updatedEl.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
-            if (lastChildItem) {
-                observer.observe(lastChildItem);
+        // updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
+        // if (updatedEl) {
+        //   lastChildItem = updatedEl.querySelectorAll(".lazy-item")[
+        //     el.querySelectorAll(".lazy-item").length - 1
+        //   ] as HTMLDivElement;
+        //   if (lastChildItem) {
+        //     observer.observe(lastChildItem);
+        //   }
+        // }
+        setTimeout(() => {
+            if (el.querySelector(".lazy-item")) {
+                lastChildItem =
+                    el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
+                if (lastChildItem) {
+                    observer.observe(lastChildItem);
+                }
             }
-        }
+            else {
+                setTimeout(() => {
+                    if (lastChildItem) {
+                        lastChildItem =
+                            el.querySelectorAll(".lazy-item")[el.querySelectorAll(".lazy-item").length - 1];
+                        observer.observe(lastChildItem);
+                    }
+                }, 4000);
+            }
+        }, 1000);
     },
 };
