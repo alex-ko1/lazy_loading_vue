@@ -17,15 +17,11 @@ interface El {
 }
 export default {
   mounted(el: El, binding: Binding) {
-    // If you use loader
-    const elId: Number = Math.round(Math.random() * 100000);
-    el.setAttribute("id", `list-${elId}`);
-
     let lastChildItem: HTMLElement,
       lazyLoader: HTMLElement,
-      lastChildItemCopy: HTMLElement,
-      updatedEl: HTMLElement;
+      lastChildItemCopy: HTMLElement;
 
+    // If you use loader
     if (binding.arg == "loader") {
       lazyLoader = document.createElement("div");
       lazyLoader.classList.add("vue-lazy-loader");
@@ -38,12 +34,12 @@ export default {
       id: string;
     }
     interface ObserveOptions {
-      rootElement?: RootElement;
+      rootElement?: RootElement | null;
       rootMargin?: string;
       threshold?: number | number[];
     }
     const options: ObserveOptions = {
-      //root: null,
+      // rootElement: null,
       rootMargin: "0px",
       threshold: 0.75,
     };
@@ -66,7 +62,6 @@ export default {
         observer.unobserve(lastChildItem);
         await binding.value();
 
-        // setTimeout(() => {
         if (lazyLoader) {
           el.removeChild(lazyLoader);
         }
@@ -79,20 +74,10 @@ export default {
         } else {
           observer.observe(lastChildItem);
         }
-        // }, 3000);
       }
     };
     const observer = new IntersectionObserver(callback, options);
 
-    // updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
-    // if (updatedEl) {
-    //   lastChildItem = updatedEl.querySelectorAll(".lazy-item")[
-    //     el.querySelectorAll(".lazy-item").length - 1
-    //   ] as HTMLDivElement;
-    //   if (lastChildItem) {
-    //     observer.observe(lastChildItem);
-    //   }
-    // }
     setTimeout(() => {
       if (el.querySelector(".lazy-item")) {
         lastChildItem =

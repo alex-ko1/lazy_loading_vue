@@ -1,17 +1,15 @@
 import "../src/styles/style.css";
 export default {
     mounted(el, binding) {
+        let lastChildItem, lazyLoader, lastChildItemCopy;
         // If you use loader
-        const elId = Math.round(Math.random() * 100000);
-        el.setAttribute("id", `list-${elId}`);
-        let lastChildItem, lazyLoader, lastChildItemCopy, updatedEl;
         if (binding.arg == "loader") {
             lazyLoader = document.createElement("div");
             lazyLoader.classList.add("vue-lazy-loader");
             lazyLoader.textContent = "Load...";
         }
         const options = {
-            //root: null,
+            // rootElement: null,
             rootMargin: "0px",
             threshold: 0.75,
         };
@@ -24,7 +22,6 @@ export default {
                 }
                 observer.unobserve(lastChildItem);
                 await binding.value();
-                // setTimeout(() => {
                 if (lazyLoader) {
                     el.removeChild(lazyLoader);
                 }
@@ -36,19 +33,9 @@ export default {
                 else {
                     observer.observe(lastChildItem);
                 }
-                // }, 3000);
             }
         };
         const observer = new IntersectionObserver(callback, options);
-        // updatedEl = document.getElementById(`list-${elId}`) as HTMLDivElement;
-        // if (updatedEl) {
-        //   lastChildItem = updatedEl.querySelectorAll(".lazy-item")[
-        //     el.querySelectorAll(".lazy-item").length - 1
-        //   ] as HTMLDivElement;
-        //   if (lastChildItem) {
-        //     observer.observe(lastChildItem);
-        //   }
-        // }
         setTimeout(() => {
             if (el.querySelector(".lazy-item")) {
                 lastChildItem =
